@@ -2,8 +2,32 @@
   "name": "novel-harness",
   "version": "0.1.0",
   "description": "A harness for novel creation: an OKF v0.2 knowledge bundle plus adapters for coding agents (Claude Code, opencode, Codex, Gemini CLI).",
-  "type": "module",
+  "author": "TheForgivenOne",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheForgivenOne/novel-harness.git"
+  },
+  "homepage": "https://github.com/TheForgivenOne/novel-harness#readme",
+  "bugs": {
+    "url": "https://github.com/TheForgivenOne/novel-harness/issues"
+  },
+  "keywords": [
+    "novel",
+    "writing",
+    "okf",
+    "knowledge-bundle",
+    "cli",
+    "bun",
+    "claude-code",
+    "opencode",
+    "gemini-cli",
+    "fanfiction"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
   "bin": {
     "novel": "./bin/novel.ts"
   },
