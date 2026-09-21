@@ -763,3 +763,20 @@ Kept `bun:test` over Vitest: production code uses Bun-only APIs (`Bun.Glob`,
 require a permanent Bun polyfill and `bun:test` shim, runs ~3x slower, and
 violates the Bun-only constraint. The wins we wanted (snapshot updates,
 coverage, structure) are all available on `bun:test`.
+
+### 2026-09-21 — MCP as a planned optional adapter
+
+Supersedes the flat "no MCP" phrasing of the 2026-09-12 decision. MCP is now a
+**planned adapter**, not a prohibition and not a dependency.
+
+- MCP is rendered like any other adapter artifact (see `src/core/adapters/`),
+  exposing operations the CLI already has — `novel_query`, `novel_context`,
+  `novel_validate`, `novel_fetch` — as MCP tools. The 2026-09-13 tool set is
+  unchanged.
+- MCP is **never required**. Every workflow keeps working by reading the bundle
+  and calling the CLI directly.
+- Any MCP server is **local** and reads the same on-disk bundle. No hosted or
+  required runtime service.
+- **The CLI never calls an LLM** (2026-09-12) still holds, unchanged.
+- Priority ordering: core CLI first, then terminal coding agents, then
+  editor-integrated agents, then MCP. See `ROADMAP.md`.
