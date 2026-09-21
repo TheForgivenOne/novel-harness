@@ -22,7 +22,49 @@ Full design: [docs/SPEC.md](docs/SPEC.md).
 
 ## Requirements
 
-[Bun](https://bun.sh) >= 1.1.
+[Bun](https://bun.sh) >= 1.1. The CLI is Bun-native; it runs no Node and needs
+no other runtime.
+
+## Install
+
+Pick one. Every path exposes the same `novel` command.
+
+**No install (run once, from npm or JSR):**
+
+```bash
+bunx novel-harness init my-novel        # npm registry
+bunx jsr:@theforgivenone/novel-harness init my-novel   # JSR
+bunx github:TheForgivenOne/novel-harness init my-novel  # straight from git
+```
+
+**From a clone (developing or self-hosting):**
+
+```bash
+git clone https://github.com/TheForgivenOne/novel-harness.git
+cd novel-harness
+bash scripts/install.sh      # bun install + bun link + verify
+```
+
+To undo the global link: `bun unlink` in the repo root.
+
+**Global from npm** (once published):
+
+```bash
+bun add -g novel-harness
+novel --version
+```
+
+**Homebrew** (macOS/Linux, tap maintained in this org):
+
+```bash
+brew install TheForgivenOne/novel-harness/novel-harness
+```
+
+**Nix** (flake, no install step; `nix develop` gives a dev shell):
+
+```bash
+nix run github:TheForgivenOne/novel-harness
+```
 
 ## Quickstart
 
