@@ -15,7 +15,10 @@
     "src",
     "docs",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "TRADEMARK.md",
+    "AUTHORS.md",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "test": "bun test ./tests",

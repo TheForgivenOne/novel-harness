@@ -351,4 +351,12 @@ cd sandbox/teenwolf && opencode    #       supernatural, twilight, blank
 
 ## License
 
-MIT.
+MIT — see [LICENSE](LICENSE).
+
+## Trademarks
+
+"novel-harness" and the `novel` command name are project trademarks of the
+maintainer. The MIT license grants rights to the **code**; it does not grant
+rights to use the project's name or branding. Forks are welcome, but a
+redistributed or hosted derivative must not present itself as "novel-harness"
+or imply endorsement by the project. See [TRADEMARK.md](TRADEMARK.md).
