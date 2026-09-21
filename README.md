@@ -11,7 +11,13 @@ knowledge bundle — plain markdown with YAML frontmatter — and renders adapte
 so coding agents (opencode, Claude Code, Codex, Gemini CLI) can write it
 natively.
 
-- **No MCP.** No service, no runtime between you and the files.
+**The CLI is the product.** Everything else — instructions, commands, agents,
+skills, tools, and a planned MCP adapter — is a rendering of the same CLI onto
+some agent's surface. See [ROADMAP.md](ROADMAP.md) for ordering and
+[docs/SPEC.md](docs/SPEC.md) for the decisions log.
+
+- **No MCP required.** The CLI reads the bundle directly; a local MCP adapter is
+  planned but always optional. No service, no runtime between you and the files.
 - **The CLI never calls an LLM.** It scaffolds, validates, packs context, and
   builds. Your agent does the writing through rendered `/outline`, `/draft`,
   `/continue`, `/revise`, `/continuity`, and `/ask` commands.
