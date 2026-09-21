@@ -780,3 +780,21 @@ Supersedes the flat "no MCP" phrasing of the 2026-09-12 decision. MCP is now a
 - **The CLI never calls an LLM** (2026-09-12) still holds, unchanged.
 - Priority ordering: core CLI first, then terminal coding agents, then
   editor-integrated agents, then MCP. See `ROADMAP.md`.
+
+### 2026-09-21 — Original fiction is the primary focus
+
+Reframes the 2026-09-12 decision that made fanfiction "first-class" as the
+project's identity. Fanfiction stays **fully supported**; it is no longer the
+headline.
+
+- **Original novels and series are the primary use case.** The pitch is a
+  series bible and manuscript in one validated OKF bundle, with mechanical
+  continuity checking across books.
+- **Fanfiction remains fully supported** — `origin`, `diverges_at`,
+  `canon_type`, canon packs, and the `/recon → /outline → /draft` loop are
+  unchanged. No fanfic capability is removed.
+- **Rationale:** framing the tool as a fanfic tool caps the market and reads as
+  a toy to professional writers. The underlying features (timeline, continuity
+  audit, source/divergence tracking) are series-bible features that serve both.
+- **No original-fiction work is blocked for fanfic's sake**, and vice versa.
+  The positioning document is `README.md`; the roadmap ordering is unchanged.
