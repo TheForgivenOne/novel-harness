@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.DS_Store
+
+# Local test playground; recreate with `bash scripts/sandbox.sh`
+sandbox/
+
+# Reference clones for studying harness architectures (MIT)
+reference/
+
+# Agent planning artifacts — local only, never published
+.superpowers/
+docs/superpowers/
