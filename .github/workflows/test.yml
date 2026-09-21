@@ -2,17 +2,40 @@ name: test
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bun run typecheck
-      - run: bun test ./tests
-      - run: bun run test:coverage
+
+      - name: Cache bun install cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            bun-${{ runner.os }}-
+
+      - name: Install
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Test with coverage
+        run: bun run test:coverage
