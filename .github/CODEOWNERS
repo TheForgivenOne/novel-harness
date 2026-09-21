@@ -1,0 +1,7 @@
+# Reviewers per path. Update the handle if maintainership changes.
+
+* @TheForgivenOne
+
+/src/cli/ @TheForgivenOne
+/src/core/adapters/ @TheForgivenOne
+/.github/ @TheForgivenOne
