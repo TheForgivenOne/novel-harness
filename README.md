@@ -5,11 +5,15 @@
 [![Bun >= 1.1](https://img.shields.io/badge/Bun-%3E%3D1.1-black?logo=bun)](https://bun.sh)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-A harness for novel creation. It stores a novel as an
+A harness for writing **original novels and series**. It stores a novel as an
 [OKF v0.2](https://github.com/GoogleCloudPlatform/open-knowledge-format)
 knowledge bundle — plain markdown with YAML frontmatter — and renders adapters
 so coding agents (opencode, Claude Code, Codex, Gemini CLI) can write it
 natively.
+
+The bundle is a series bible and a manuscript at once: characters, world,
+timeline, plot threads, and prose in one validated tree. Continuity is checked
+mechanically, so a long series stays consistent across books.
 
 **The CLI is the product.** Everything else — instructions, commands, agents,
 skills, tools, and a planned MCP adapter — is a rendering of the same CLI onto
@@ -252,26 +256,22 @@ novel rm locations/old-archive --force   # --force leaves inbound links for vali
 Every command has its own help: `novel import --help`, `novel set --help`,
 `novel new scene --help`.
 
-## Canon packs
+## Series and continuity
 
-One crawl can serve many fics:
+Novels are the default. The bundle is a series bible: characters, world
+rules, timeline, plot threads, and prose, all linked and validated. `novel
+validate` enforces the rules, `novel context` pulls the relevant slice into an
+agent's context, and `novel graph` shows how concepts connect.
 
-```bash
-novel canon export               # -> canon/<fandom>/ (origin: source + references)
-novel canon import ../other/canon/teenwolf
-```
+For a series, continuity is checked mechanically rather than remembered.
+`novel query stale` lists facts due for review, `/continuity` audits
+contradictions, and Timeline Events carry an explicit status so a
+multi-book timeline stays coherent.
 
-Import preserves paths so links keep working. Identical concepts are skipped,
-your `fanon`/`divergent` edits are kept, source-vs-source differences are
-reported as conflicts (`--force` to overwrite).
+## Fanfiction (supported mode)
 
-Recon is incremental once canon exists: `novel query stale` lists facts due
-for a refresh, and `/recon` updates only those through their `refs`.
-
-## Fanfiction
-
-Fanfiction is first-class. A source work is a `Reference` concept, and the
-Novel records the fandom:
+Fanfiction is supported alongside original work, not the default. A source
+work is a `Reference` concept, and the Novel records the fandom:
 
 ```bash
 novel init my-fic --name "The Boy Who Lived Again" --fandom "Harry Potter" \
@@ -292,12 +292,7 @@ novel new character "Draco Malfoy" --origin divergent \
 - `canon_type` is one of `canon-compliant`, `canon-divergent`,
   `alternate-universe`, `fusion`, `crossover`.
 
-`novel validate` enforces the canon rules, `novel context` pulls source and
-divergence links into an agent's context, and `novel graph` shows them as
-edges. The `/continuity` workflow audits contradictions against
-`origin: source` facts.
-
-The fanfiction loop is three-phase:
+The fanfiction loop adds a recon phase ahead of outlining:
 
 ```
 /recon     learn the source canon broadly, record it as origin: source
@@ -309,16 +304,9 @@ The fanfiction loop is three-phase:
 /draft → /weave → /continue → /revise → /continuity
 ```
 
-`/weave <canon event>` is the fanfic special: it loads the canon snapshot at
-that date (`novel query when`) and writes a scene where your MC is present —
-same time, place, participants, and outcome, with the source's dialogue left
-intact. Canon stays canon; the MC is woven through it.
-
-Recon maps rather than extracts. The bundle holds the state — characters,
-plot, timeline, arcs, episodes, and a compact recap per episode — plus `refs`
-linking each concept to its authoritative pages. When a scene needs exact
-staging, voice, or dialogue, `/draft` and `/weave` fetch those pages on
-demand: the web holds the full detail, the bundle holds the map.
+`/weave <canon event>` loads the canon snapshot at that date (`novel query
+when`) and writes a scene where your MC is present — same time, place,
+participants, and outcome, with the source's dialogue left intact.
 
 Canon divergence is tracked explicitly. Every Timeline Event carries a
 `divergence` status — `intact` (happened as canon), `altered` (happened,
@@ -338,6 +326,10 @@ intact: 12 · altered: 3 · averted: 2 · added: 5 · unmarked: 0
 Recon is deliberately web-first: the agent must read and cite sources, and
 must stop rather than fill canon from model memory. That's what keeps the
 result a true fanfic instead of a half-remembered one.
+
+Canon packs let one crawl serve several projects: `novel canon export` writes
+`canon/<fandom>/`, and `novel canon import` brings it into another bundle,
+keeping your `fanon`/`divergent` edits.
 
 ## Migrating
 

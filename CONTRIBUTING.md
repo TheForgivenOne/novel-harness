@@ -31,7 +31,9 @@ These are load-bearing; changes that violate them will be declined:
 - **No MCP, no runtime service.** The bundle on disk is the single source of
   truth.
 - **OKF v0.2 conformance is a hard requirement.**
-- **Fanfiction is first-class** (`origin`, `diverges_at`, `canon_type`).
+- **Original novels and series are the focus.** Fanfiction is fully supported
+  (`origin`, `diverges_at`, `canon_type`) but is not the primary use case, and
+  no original-fiction work should be blocked for fanfic's sake.
 
 ## Code style
 
