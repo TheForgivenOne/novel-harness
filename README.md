@@ -20,51 +20,49 @@ natively.
 
 Full design: [docs/SPEC.md](docs/SPEC.md).
 
-## Requirements
-
-[Bun](https://bun.sh) >= 1.1. The CLI is Bun-native; it runs no Node and needs
-no other runtime.
-
 ## Install
 
-Pick one. Every path exposes the same `novel` command.
+The CLI is a single Bun-native binary. Pick one path; each exposes the same
+`novel` command.
 
-**No install (run once, from npm or JSR):**
+**Prebuilt binary (no Bun, no clone):**
 
 ```bash
-bunx novel-harness init my-novel        # npm registry
-bunx jsr:@theforgivenone/novel-harness init my-novel   # JSR
-bunx github:TheForgivenOne/novel-harness init my-novel  # straight from git
+curl -fsSL https://raw.githubusercontent.com/TheForgivenOne/novel-harness/main/scripts/install.sh | sh
+novel --version
 ```
 
-**From a clone (developing or self-hosting):**
+Installs to `~/.local/bin/novel`. Override the location with
+`NOVEL_HARNESS_BIN=/usr/local/bin` and pin a version with `NOVEL_VERSION=v0.1.0`.
+
+**Run without installing (needs Bun):**
+
+```bash
+bunx github:TheForgivenOne/novel-harness init my-novel   # straight from git
+bunx novel-harness init my-novel                         # npm, once published
+```
+
+**Build from source:**
 
 ```bash
 git clone https://github.com/TheForgivenOne/novel-harness.git
 cd novel-harness
-bash scripts/install.sh      # bun install + bun link + verify
+bash scripts/build.sh            # -> dist/novel (standalone, host platform)
+bash scripts/build.sh bun-linux-x64   # cross-compile
 ```
 
-To undo the global link: `bun unlink` in the repo root.
-
-**Global from npm** (once published):
+**Global via a package manager:**
 
 ```bash
-bun add -g novel-harness
-novel --version
+bun add -g novel-harness                                  # npm, once published
+brew install TheForgivenOne/novel-harness/novel-harness   # once a tap exists
+nix run github:TheForgivenOne/novel-harness               # once a flake exists
 ```
 
-**Homebrew** (macOS/Linux, tap maintained in this org):
+## Requirements
 
-```bash
-brew install TheForgivenOne/novel-harness/novel-harness
-```
-
-**Nix** (flake, no install step; `nix develop` gives a dev shell):
-
-```bash
-nix run github:TheForgivenOne/novel-harness
-```
+To run a prebuilt binary: nothing beyond a supported OS (Linux/macOS, x64 or
+arm64). To run from source or `bunx`: [Bun](https://bun.sh) >= 1.1.
 
 ## Quickstart
 
