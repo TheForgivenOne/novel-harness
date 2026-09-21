@@ -1,5 +1,10 @@
 # novel-harness
 
+[![CI](https://github.com/TheForgivenOne/novel-harness/actions/workflows/test.yml/badge.svg)](https://github.com/TheForgivenOne/novel-harness/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Bun >= 1.1](https://img.shields.io/badge/Bun-%3E%3D1.1-black?logo=bun)](https://bun.sh)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 A harness for novel creation. It stores a novel as an
 [OKF v0.2](https://github.com/GoogleCloudPlatform/open-knowledge-format)
 knowledge bundle — plain markdown with YAML frontmatter — and renders adapters
@@ -328,9 +333,13 @@ novel validate --fix                  # unquotes sources, normalizes added event
 
 ```bash
 bun install
-bun test
-bun run typecheck
+bun run test        # bun test ./tests
+bun run typecheck   # alias: bun run lint
 ```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for conventions, [ROADMAP.md](ROADMAP.md)
+for what's planned, and [CHANGELOG.md](CHANGELOG.md) for release notes. Questions
+and ideas go in [Discussions](https://github.com/TheForgivenOne/novel-harness/discussions).
 
 Try it end to end with an agent using a sandbox preset. Each preset gets its
 own folder, so they coexist:

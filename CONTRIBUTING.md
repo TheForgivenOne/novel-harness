@@ -59,5 +59,5 @@ Use [Conventional Commits](https://www.conventionalcommits.org/):
 ## Reporting issues
 
 Open an issue at
-<https://github.com/TheForgivenOne/novel-harnes/issues>. Include the command
+<https://github.com/TheForgivenOne/novel-harness/issues>. Include the command
 you ran, the output, and your Bun version.
