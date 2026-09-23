@@ -30,7 +30,7 @@ export const opencodeAdapter: Adapter = {
     }
     for (const skill of skills) {
       files.push({
-        path: `.opencode/skill/${skill.name}/SKILL.md`,
+        path: `.opencode/skills/${skill.name}/SKILL.md`,
         content: markdownSkill(skill),
         kind: "skills",
       });
