@@ -1,8 +1,9 @@
 import { existsSync } from "node:fs";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, rmdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { INSTRUCTIONS } from "../../workflows/index.ts";
 import { loadWorkflows } from "../../workflows/load.ts";
+import { GENERATED_HEADER } from "../adapters/render.ts";
 import { syncAdapters } from "../adapters/sync.ts";
 import { loadBundle } from "../bundle/bundle.ts";
 import { getTitle, getType } from "../bundle/concept.ts";
@@ -34,6 +35,38 @@ export interface DoctorReport {
   /** Content diagnostics grouped by code. */
   content: Record<string, number>;
   suggestions: string[];
+}
+
+/** Old opencode skills location; opencode only reads `.opencode/skills/`. */
+const LEGACY_SKILL_DIR = ".opencode/skill";
+
+async function legacySkillEntries(projectRoot: string): Promise<string[]> {
+  const entries = await readdir(join(projectRoot, LEGACY_SKILL_DIR)).catch(() => [] as string[]);
+  return entries.filter((name) => name.startsWith("novel-"));
+}
+
+/** Remove legacy `novel-*` skills only when they are ours (generated header). */
+async function removeLegacySkillDir(projectRoot: string): Promise<boolean> {
+  const dir = join(projectRoot, LEGACY_SKILL_DIR);
+  const entries = await readdir(dir).catch(() => undefined);
+  if (entries === undefined) return false;
+
+  let removedAny = false;
+  for (const name of entries) {
+    if (!name.startsWith("novel-")) continue;
+    const entryPath = join(dir, name);
+    const files = await readdir(entryPath).catch(() => undefined);
+    if (files === undefined || files.length !== 1 || files[0] !== "SKILL.md") continue;
+    const content = await readFile(join(entryPath, "SKILL.md"), "utf8").catch(() => undefined);
+    if (content !== undefined && content.includes(GENERATED_HEADER)) {
+      await rm(entryPath, { recursive: true, force: true });
+      removedAny = true;
+    }
+  }
+
+  const remaining = await readdir(dir).catch(() => [] as string[]);
+  if (remaining.length === 0) await rmdir(dir).catch(() => undefined);
+  return removedAny;
 }
 
 const MIGRATION_CODES = new Set([
@@ -120,6 +153,15 @@ export async function checkProject(
         fixable: false,
       });
     }
+  }
+
+  if ((await legacySkillEntries(projectRoot)).length > 0) {
+    issues.push({
+      code: "adapters/legacy-path",
+      severity: "warning",
+      message: `${LEGACY_SKILL_DIR}/ is the old skills path; opencode reads .opencode/skills/ — run \`novel update\``,
+      fixable: true,
+    });
   }
 
   const bundle = await loadBundle(bundlePath);
@@ -214,6 +256,10 @@ export async function fixProject(projectRoot: string, config: ProjectConfig): Pr
         `synced adapters (${sync.written.length} written, ${sync.updated.length} updated, ${sync.removed.length} removed)`,
       );
     }
+  }
+
+  if (await removeLegacySkillDir(projectRoot)) {
+    applied.push(`removed legacy ${LEGACY_SKILL_DIR}/`);
   }
 
   return applied;

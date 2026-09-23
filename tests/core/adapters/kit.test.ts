@@ -90,7 +90,7 @@ describe("kit rendering", () => {
     expect(agent?.content.startsWith("---\n")).toBe(true);
     expect(agent?.content).toContain("mode: subagent");
     expect(agent?.content).toContain("edit: deny");
-    const skill = find(files, ".opencode/skill/novel-harness/SKILL.md");
+    const skill = find(files, ".opencode/skills/novel-harness/SKILL.md");
     expect(skill?.content).toContain("name: novel-harness");
     const fetch = find(files, ".opencode/tools/novel_fetch.ts");
     expect(fetch?.content).toContain("tool(");

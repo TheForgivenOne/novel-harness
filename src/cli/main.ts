@@ -26,6 +26,8 @@ import { cmdSet } from "./commands/set.ts";
 import { cmdStatus } from "./commands/status.ts";
 import { cmdSync } from "./commands/sync.ts";
 import { cmdTag } from "./commands/tag.ts";
+import { cmdUpdate } from "./commands/update.ts";
+import { cmdUpgrade } from "./commands/upgrade.ts";
 import { cmdValidate } from "./commands/validate.ts";
 
 const HELP = `novel — a harness for novel creation on an OKF v0.2 bundle
@@ -48,6 +50,8 @@ Commands:
   audit [options]         Project, content, and source report (--fix, --receipts, --online)
   doctor [--fix]          Check config, structure, adapters, and content
   migrate                 Update an old project and render the /migrate command
+  update                  Refresh this project in place (config, adapters, indexes)
+  upgrade [--check] [--yes]  Update the novel CLI itself
   index                   Regenerate all index.md files
   context [<concept> | --story]
                           Print the context slice; --story is the whole-story slice
@@ -239,6 +243,23 @@ const COMMAND_HELP: Record<string, CommandHelp> = {
     summary: "Update an old project; with --spec, run convert/merge/tag migrations.",
     flags: ["--spec <file>   Validated YAML migration actions"],
   },
+  update: {
+    usage: "update",
+    summary:
+      "Refresh this project in place: config version, missing directories, chapter outlines, indexes, and agent adapters. Migrates the legacy .opencode/skill/ path.",
+  },
+  upgrade: {
+    usage: "upgrade [--check] [--yes] [--version <tag>] [--json]",
+    summary:
+      "Update the novel CLI itself. Detects how it was installed; --check asks GitHub for the latest release; --yes applies a source or binary update.",
+    flags: [
+      "--check            Look up the latest release (network)",
+      "--yes              Apply the update (source: git pull + bun install; binary: download and replace)",
+      "--version <tag>    Target a specific release tag",
+      "--json             Machine-readable report",
+    ],
+    examples: ["novel upgrade --check", "novel upgrade --yes"],
+  },
   index: {
     usage: "index",
     summary: "Regenerate every index.md in the bundle.",
@@ -347,6 +368,8 @@ const COMMANDS: Record<string, Handler> = {
   audit: cmdAudit,
   doctor: cmdDoctor,
   migrate: cmdMigrate,
+  update: cmdUpdate,
+  upgrade: cmdUpgrade,
   index: cmdIndex,
   context: cmdContext,
   query: cmdQuery,

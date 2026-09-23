@@ -82,6 +82,7 @@ Hard constraints:
 ## Tier 5 — Distribution
 
 - Standalone binaries via GitHub Releases (done); curl installer (done)
+- Self-update (`novel upgrade`) and in-place project refresh (`novel update`) (done)
 - Homebrew tap
 - Nix flake
 

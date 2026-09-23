@@ -67,7 +67,7 @@ describe("sync", () => {
     expect(first.written).toContain("AGENTS.md");
     expect(first.written).toContain(".claude/commands/draft.md");
     expect(first.written).toContain(".opencode/agent/researcher.md");
-    expect(first.written).toContain(".opencode/skill/novel-recon/SKILL.md");
+    expect(first.written).toContain(".opencode/skills/novel-recon/SKILL.md");
     expect(first.written).toContain(".opencode/tools/novel_fetch.ts");
     expect(first.written).toContain(".opencode/plugin/novel-guard.ts");
     expect(first.written).toContain(".claude/agents/skeptic.md");

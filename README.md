@@ -69,6 +69,19 @@ brew install TheForgivenOne/novel-harness/novel-harness   # once a tap exists
 nix run github:TheForgivenOne/novel-harness               # once a flake exists
 ```
 
+### Updating
+
+`novel upgrade` detects how the CLI was installed and tells you how to update
+it. It is offline by default: `--check` asks GitHub for the latest release, and
+`--yes` applies the update when the install is a source checkout (`git pull` +
+`bun install`) or a standalone binary (download the release asset, verify
+`SHA256SUMS`, replace the executable). Package-manager installs print the right
+command instead of running it. Pin a release with `--version v0.2.0`.
+
+`novel update` refreshes a *project* in place — config version, missing
+directories, chapter outlines, indexes, and agent adapters. Run it after
+upgrading the CLI.
+
 ## Requirements
 
 To run a prebuilt binary: nothing beyond a supported OS (Linux/macOS, x64 or
@@ -111,6 +124,8 @@ and run `/outline`, then `/draft chapters/the-archive/a-map-that-shouldnt-exist`
 | `novel audit [--fix] [--receipts] [--online] [--only <id\|glob>]` | One report: project, content, sources, receipts, links (`--quiet`, `--summary`, `--json`) |
 | `novel fetch <url>` | Fetch a page and log a research receipt |
 | `novel doctor [--fix]` | Report or fix outdated config, structure, and adapters |
+| `novel update` | Refresh a project in place: config, structure, indexes, adapters |
+| `novel upgrade [--check] [--yes]` | Update the CLI itself (`--version <tag>`, `--json`) |
 | `novel index` | Regenerate all `index.md` files |
 | `novel context <concept>` | Print an agent context slice to stdout |
 | `novel query <subcommand>` | Structured reads: `search`, `timeline`, `when`, `divergences`, `stale`, `character`, `at`, `tag`, `refs`, `stats` (`--summary` skips per-chapter lines) |
@@ -186,7 +201,7 @@ Then run `novel sync`.
 | Artifact | Where | What |
 |---|---|---|
 | Subagents | `.opencode/agent/` | `researcher`, `skeptic`, `continuity-checker` — audit helpers |
-| Skills | `.opencode/skill/` | `novel-harness`, `novel-recon`, `novel-drafting`, `novel-fanfic`, `novel-migration` |
+| Skills | `.opencode/skills/` | `novel-harness`, `novel-recon`, `novel-drafting`, `novel-fanfic`, `novel-migration` |
 | Tools | `.opencode/tools/` | `novel_query`, `novel_context`, `novel_validate`, `novel_fetch` |
 | Plugin | `.opencode/plugin/novel-guard.ts` | runs `novel validate` after story writes and reports the tail |
 
@@ -336,7 +351,13 @@ keeping your `fanon`/`divergent` edits.
 `novel doctor` checks an existing project for outdated config, missing
 concept directories, stale adapters, index drift, and content warnings —
 without writing anything. `novel doctor --fix` applies the mechanical fixes
-(config version, directories, indexes, adapters).
+(config version, directories, indexes, adapters). `novel update` is the
+one-shot version of those mechanical fixes for a project you just upgraded.
+
+Older releases wrote opencode skills to `.opencode/skill/` (singular); opencode
+only reads `.opencode/skills/`. `novel update` (or `novel doctor --fix`)
+re-renders the skills at the new path and removes the old directory when it
+held only generated files.
 
 The entry point for an old project is `novel migrate`: it applies those
 mechanical fixes, renders the `/migrate` command into your agent, and prints
