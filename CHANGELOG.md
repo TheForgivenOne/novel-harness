@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0](https://github.com/TheForgivenOne/novel-harness/compare/v0.1.0...v0.2.0) (2026-09-23)
+
+
+### Features
+
+* **cli:** self-update, in-place project update, and opencode skills path fix ([#11](https://github.com/TheForgivenOne/novel-harness/issues/11)) ([79bbc99](https://github.com/TheForgivenOne/novel-harness/commit/79bbc99b4b7a536bc23933bf2b64eb57a9fd2029))
+* **package:** add repository, homepage, bugs, author, and keywords metadata ([#5](https://github.com/TheForgivenOne/novel-harness/issues/5)) ([#7](https://github.com/TheForgivenOne/novel-harness/issues/7)) ([cf5279b](https://github.com/TheForgivenOne/novel-harness/commit/cf5279bbd4fe52f2ee52b26ae742b4eca76b1a22))
+* prebuilt binary releases, build script, and standalone curl installer ([41ea5d1](https://github.com/TheForgivenOne/novel-harness/commit/41ea5d1fd797e654d2e923a807b8b739514646e3))
+
 ## [Unreleased]
 
 ## [0.1.0] - 2026-09-21
