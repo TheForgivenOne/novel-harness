@@ -5,6 +5,17 @@ on:
     tags:
       - "v*"
   workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to build and attach binaries to (e.g. v0.2.0)"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      tag:
+        description: "Tag to build and attach binaries to"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -20,7 +31,7 @@ jobs:
           - os: ubuntu-24.04-arm
             target: bun-linux-arm64
             artifact: novel-linux-arm64
-          - os: macos-13
+          - os: macos-15-intel
             target: bun-darwin-x64
             artifact: novel-darwin-x64
           - os: macos-14
@@ -29,6 +40,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref_name }}
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -59,6 +72,7 @@ jobs:
           cat SHA256SUMS
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
           files: |
             dist/novel-*
             dist/SHA256SUMS
