@@ -332,6 +332,8 @@ with a `diverges_at` warns (`fanfic/intact-with-divergence`); `added` marked
 | `novel audit [--fix] [--receipts] [--online] [--only <id\|glob>] [--severity <level>] [--quiet] [--summary] [--json]` | One report: project drift, content diagnostics, source classification, receipts, link liveness |
 | `novel fetch <url>` | Fetch a page and append a sha256 receipt to `.novel/fetch-log.jsonl` (`--max-bytes`) |
 | `novel doctor [--fix]` | Report or fix config, structure, adapters, and index drift |
+| `novel update` | Refresh a project in place: config version, structure, indexes, adapters, legacy paths |
+| `novel upgrade [--check] [--yes] [--version <tag>] [--json]` | Update the CLI itself; detects the install method, offline unless `--check`/`--yes` |
 | `novel migrate [--spec <rules.yaml>]` | Mechanical upgrade; with `--spec`, also run convert/merge/tag migrations |
 | `novel index` | Regenerate all `index.md` files |
 | `novel build [--out]` | Assemble manuscript in sequence order into `dist/` |
@@ -395,7 +397,7 @@ body) is rendered per target:
 | Target | Instructions | Commands | Agents | Skills | Tools | Hooks |
 |---|---|---|---|---|---|---|
 | Claude Code | `CLAUDE.md` | `.claude/commands/<name>.md` | `.claude/agents/<name>.md` | `.claude/skills/<name>/SKILL.md` | — | deferred |
-| opencode | `AGENTS.md` | `.opencode/command/<name>.md` | `.opencode/agent/<name>.md` | `.opencode/skill/<name>/SKILL.md` | `.opencode/tools/<name>.ts` | `.opencode/plugin/novel-guard.ts` |
+| opencode | `AGENTS.md` | `.opencode/command/<name>.md` | `.opencode/agent/<name>.md` | `.opencode/skills/<name>/SKILL.md` | `.opencode/tools/<name>.ts` | `.opencode/plugin/novel-guard.ts` |
 | Codex / generic | `AGENTS.md` | — | — | — | — | — |
 | Gemini CLI | `GEMINI.md` | `.gemini/commands/<name>.toml` | — | — | — | deferred |
 
@@ -562,6 +564,17 @@ mechanical fixes. The spec is a YAML list of actions executed in order:
 (`primary`/`remove`), and `tag` (a `match` mapping plus an `add` list). The
 whole spec is validated before anything runs; a failing action reports its
 index and leaves earlier writes in place.
+
+`novel update` is the project-side counterpart to `novel upgrade`: it runs the
+same mechanical fixes as `novel doctor --fix` without rendering `/migrate`,
+for refreshing a project right after the CLI is upgraded.
+
+Older releases rendered opencode skills to `.opencode/skill/` (singular).
+opencode only discovers skills under `.opencode/skills/`, so `novel doctor`
+reports `adapters/legacy-path` and `novel update` (or `novel doctor --fix`)
+re-renders the skills at the new path and removes the legacy directory only
+when it held generated files (identified by the generated header); untracked
+user content is never deleted.
 
 `novel validate --fix` applies unambiguous quick fixes in addition to
 regenerating indexes: quoted source resources are unquoted, and Timeline
@@ -798,3 +811,28 @@ headline.
   audit, source/divergence tracking) are series-bible features that serve both.
 - **No original-fiction work is blocked for fanfic's sake**, and vice versa.
   The positioning document is `README.md`; the roadmap ordering is unchanged.
+
+### 2026-09-23 — Self-update and in-place project update
+
+Adds the two missing upgrade paths: updating the CLI (`novel upgrade`) and
+refreshing a project (`novel update`), plus migration of the old opencode
+skills path.
+
+- `novel upgrade` is **offline by default**: it detects the install method
+  (source checkout, standalone binary, bun/npm/brew/nix) and prints the update
+  command. `--check` looks up the latest GitHub release; `--yes` performs the
+  update only for installs the CLI owns — a source checkout (`git pull
+  --ff-only` + `bun install`, or `git fetch`/`checkout` for `--version`) or a
+  standalone binary (download the release asset, verify `SHA256SUMS`, then
+  atomically replace `process.execPath`). Package-manager installs are
+  reported, never executed. This keeps the 2026-09-12 constraints: **the CLI
+  never calls an LLM**, no hosted runtime service, and the only network use is
+  opt-in via `--check`/`--yes`.
+- `novel update` is the project-side counterpart to `novel upgrade`: the
+  mechanical fixes of `novel doctor --fix` without rendering `/migrate`.
+  `novel migrate` remains the content-migration entry point.
+- opencode skills moved to the plural `.opencode/skills/` path (opencode
+  ignores the singular `skill/`). `novel doctor` reports the legacy path as
+  `adapters/legacy-path`; the fix re-renders skills and removes the legacy
+  directory only when it contains generated files, so untracked user content
+  is never deleted.

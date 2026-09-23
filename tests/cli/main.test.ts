@@ -33,6 +33,8 @@ describe("per-command help", () => {
     ["rm", "novel rm"],
     ["mv", "novel mv"],
     ["renumber", "novel renumber"],
+    ["update", "novel update"],
+    ["upgrade", "novel upgrade"],
   ])("%s prints its own usage", async (command, needle) => {
     const { code, out } = await capture([command, "--help"]);
     expect(code).toBe(0);
